@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Amanhecer na Presença</title>
+  <title>Amanhecer com Deus</title>
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -13,7 +12,6 @@
 
   <!-- CSS -->
   <link rel="stylesheet" href="style.css" />
-  <link rel="icon" type="image/png" href="logo1.png" />
 </head>
 <body>
 
@@ -21,24 +19,28 @@
 
     <!-- HEADER -->
     <header class="header">
-      <div class="header-brand">
-        <div class="logo-icon">
-          <img src="logo1.png" alt="Pomba do Espírito Santo" onerror="this.style.display='none'; document.getElementById('pomba-svg').style.display='block'" />
-          <svg id="pomba-svg" style="display:none" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
-            <!-- Corpo da pomba -->
-            <path d="M20,62 Q10,50 18,38 Q28,22 50,28 Q65,20 80,28 Q100,18 108,30 Q116,42 100,50 Q88,56 75,52 L90,70 Q75,78 60,68 Q50,80 35,76 Q18,72 20,62 Z" fill="#742802" opacity="0.85"/>
-            <!-- Asa -->
-            <path d="M50,28 Q62,10 85,18 Q100,14 108,30 Q88,22 75,32 Q62,28 50,28 Z" fill="#c4602a" opacity="0.7"/>
-            <!-- Rabo -->
-            <path d="M35,76 Q25,90 15,88 Q22,78 20,62 Q28,72 35,76 Z" fill="#742802" opacity="0.9"/>
-            <!-- Olho -->
-            <circle cx="92" cy="36" r="3" fill="#fdf6ee"/>
-            <!-- Bico -->
-            <path d="M108,30 L118,28 L112,36 Z" fill="#c4602a"/>
-          </svg>
-        </div>
-        <img src="logo2.png" alt="Amanhecer com Deus" class="header-logo" />
+      <div class="logo-icon">
+        <!--
+          Substitua a tag <img> abaixo pelo caminho da sua imagem de pomba.
+          Exemplo: <img src="pomba.png" alt="Pomba" />
+          A imagem já está estilizada via CSS (.logo-icon img).
+          Enquanto isso, um SVG de placeholder é exibido.
+        -->
+        <img src="pomba.png" alt="Pomba do Espírito Santo" onerror="this.style.display='none'; document.getElementById('pomba-svg').style.display='block'" />
+        <svg id="pomba-svg" style="display:none" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
+          <!-- Corpo da pomba -->
+          <path d="M20,62 Q10,50 18,38 Q28,22 50,28 Q65,20 80,28 Q100,18 108,30 Q116,42 100,50 Q88,56 75,52 L90,70 Q75,78 60,68 Q50,80 35,76 Q18,72 20,62 Z" fill="#742802" opacity="0.85"/>
+          <!-- Asa -->
+          <path d="M50,28 Q62,10 85,18 Q100,14 108,30 Q88,22 75,32 Q62,28 50,28 Z" fill="#c4602a" opacity="0.7"/>
+          <!-- Rabo -->
+          <path d="M35,76 Q25,90 15,88 Q22,78 20,62 Q28,72 35,76 Z" fill="#742802" opacity="0.9"/>
+          <!-- Olho -->
+          <circle cx="92" cy="36" r="3" fill="#fdf6ee"/>
+          <!-- Bico -->
+          <path d="M108,30 L118,28 L112,36 Z" fill="#c4602a"/>
+        </svg>
       </div>
+      <h1 class="header-title">Amanhecer<br />com Deus</h1>
       <p class="header-subtitle">Devocional Diário</p>
     </header>
 
@@ -80,17 +82,15 @@
       <div class="contador-box">
         <p class="contador-label">Próximo devocional em</p>
         <p class="contador-tempo" id="contador-tempo">--:--:--</p>
-        <p class="contador-sub">Todo dia às <strong>00:00</strong> um novo devocional</p>
+        <p class="contador-sub">Todo dia às <strong>05:00</strong> um novo devocional</p>
       </div>
       <p class="data-hoje" id="data-hoje"></p>
-      <div class="footer-divider"></div>
-      <p class="footer-credit">Desenvolvido por <a href="https://vyerak.lovable.app" target="_blank" rel="noopener noreferrer">Vyerak</a></p>
     </footer>
 
   </div>
 
   <!-- JavaScript -->
-  <script src="devocionais.js"></script>
+  <script src="script.js"></script>
   <script src="app.js"></script>
 
 </body>

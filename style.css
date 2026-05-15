@@ -1,0 +1,342 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Kedebideri:wght@400;500;600;700;800;900&family=Sacramento&display=swap');
+
+/* ============================================
+   AMANHECER NA PRESENÇA — PARA CASAIS
+   style.css
+   ============================================ */
+
+/* ---------- VARIÁVEIS ---------- */
+:root {
+  --rosa-principal:    #f8c1d4;
+  --rosa-suave:        #fce7f0;
+  --rosa-claro:        #fff0f5;
+  --rosa-medio:        #f5b0c8;
+  --rosa-escuro:       #e89ab6;
+  --marrom-romantico:  #8c4a5f;
+  --texto:             #5c2e3d;
+  --texto-suave:       #7a4a5a;
+}
+
+/* ---------- RESET ---------- */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ---------- HTML — ancora o gradiente de fundo ----------
+   O gradiente fica no <html> para cobrir TODA a altura da
+   página (incluindo scroll além da viewport).               */
+html {
+  min-height: 100%;
+  background: linear-gradient(160deg, #fff0f5 0%, #fce7f0 50%, #fad4e8 100%);
+  /* Fixa o fundo mesmo ao rolar */
+  background-attachment: fixed;
+}
+
+/* ---------- BODY — transparente para mostrar o html ---------- */
+body {
+  font-family: 'Kedebideri', serif;
+  color: var(--texto);
+  min-height: 100dvh;      /* dvh = dynamic viewport height (mobile-safe) */
+  background: transparent; /* <-- ESSENCIAL: sem isso, o body sobrepõe o html */
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Brilhos decorativos fixos — cobrem a tela toda sempre */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at 15% 15%, rgba(248,193,212,0.40) 0%, transparent 50%),
+    radial-gradient(circle at 85% 85%, rgba(252,231,240,0.45) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(232,154,182,0.10) 0%, transparent 55%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ---------- WRAPPER ---------- */
+.wrapper {
+  position: relative;
+  z-index: 1;
+  max-width: 480px;
+  margin: 0 auto;
+  padding-bottom: 80px;
+}
+
+/* ---------- HEADER ---------- */
+.header {
+  text-align: center;
+  padding: 50px 24px 32px;
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.logo-icon {
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+}
+
+.logo-icon img,
+.logo-icon svg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 8px rgba(140,74,95,0.20));
+}
+
+.header-logo {
+  max-width: 220px;
+  height: auto;
+  filter: drop-shadow(0 1px 4px rgba(140,74,95,0.15));
+}
+
+.header-subtitle {
+  font-family: 'Kedebideri', serif;
+  font-size: 0.78rem;
+  color: var(--marrom-romantico);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-top: 4px;
+  opacity: 0.85;
+}
+
+/* ---------- DIVISOR ---------- */
+.divider {
+  display: block;
+  height: 1px;
+  margin: 0 24px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--rosa-medio),
+    var(--rosa-escuro),
+    var(--rosa-medio),
+    transparent
+  );
+  opacity: 0.65;
+}
+
+/* ---------- CARD ---------- */
+.card {
+  margin: 28px 20px 0;
+  background: rgba(255, 249, 252, 0.96);
+  border: 1px solid rgba(248, 193, 212, 0.55);
+  border-radius: 24px;
+  padding: 36px 28px;
+  box-shadow:
+    0 8px 32px rgba(232,154,182,0.18),
+    0 0 0 1px rgba(255,255,255,0.7) inset;
+  animation: fadeUp 0.6s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- BADGE DIA ---------- */
+.badge-dia {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(248,193,212,0.30);
+  border: 1px solid var(--rosa-escuro);
+  border-radius: 30px;
+  padding: 5px 16px;
+  font-size: 0.72rem;
+  color: var(--marrom-romantico);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 22px;
+  font-family: 'Kedebideri', serif;
+  font-weight: 600;
+}
+
+/* ---------- TÍTULO ---------- */
+.titulo-devocional {
+  font-family: 'Dancing Script', cursive;
+  font-size: 2.2rem;
+  color: var(--marrom-romantico);
+  line-height: 1.2;
+  margin-bottom: 26px;
+  font-weight: 600;
+}
+
+/* ---------- RÓTULOS DE SEÇÃO ---------- */
+.secao-label {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.3rem;
+  color: var(--rosa-escuro);
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+/* ---------- VERSÍCULO ---------- */
+.versiculo-box {
+  background: rgba(248,193,212,0.14);
+  border-left: 4px solid var(--rosa-escuro);
+  border-radius: 0 14px 14px 0;
+  padding: 16px 20px;
+  margin-bottom: 28px;
+}
+
+.versiculo-texto {
+  font-family: 'Kedebideri', serif;
+  font-size: 0.97rem;
+  line-height: 1.75;
+  color: var(--texto);
+  font-style: italic;
+  margin-bottom: 8px;
+}
+
+.versiculo-ref {
+  font-family: 'Kedebideri', serif;
+  font-size: 0.78rem;
+  color: var(--marrom-romantico);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+/* ---------- TEXTO DEVOCIONAL ---------- */
+.devocional-texto {
+  font-family: 'Kedebideri', serif;
+  font-size: 0.95rem;
+  line-height: 1.85;
+  color: var(--texto-suave);
+  margin-bottom: 28px;
+  white-space: pre-line;
+}
+
+/* ---------- ORAÇÃO ---------- */
+.oracao-box {
+  background: rgba(252,231,240,0.85);
+  border: 1px solid var(--rosa-principal);
+  border-radius: 16px;
+  padding: 18px 22px;
+  margin-bottom: 8px;
+}
+
+.oracao-label {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.15rem;
+  color: var(--rosa-escuro);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.oracao-texto {
+  font-family: 'Kedebideri', serif;
+  font-size: 0.88rem;
+  line-height: 1.75;
+  color: var(--texto-suave);
+  font-style: italic;
+}
+
+/* ---------- SEPARADOR ---------- */
+.sep-floral {
+  text-align: center;
+  color: var(--rosa-escuro);
+  opacity: 0.5;
+  font-size: 1rem;
+  letter-spacing: 0.5em;
+  margin-top: 20px;
+}
+
+/* ---------- FOOTER ---------- */
+.footer {
+  text-align: center;
+  padding: 32px 24px 20px;
+  animation: fadeUp 0.6s ease 0.3s both;
+}
+
+.contador-box {
+  background: rgba(248,193,212,0.20);
+  border: 1px solid var(--rosa-escuro);
+  border-radius: 20px;
+  padding: 20px 28px;
+  display: inline-block;
+  min-width: 220px;
+}
+
+.contador-label {
+  font-family: 'Kedebideri', serif;
+  font-size: 0.72rem;
+  color: var(--marrom-romantico);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.contador-tempo {
+  font-family: 'Dancing Script', cursive;
+  font-size: 2.4rem;
+  color: var(--rosa-escuro);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  line-height: 1.1;
+}
+
+.contador-sub {
+  font-family: 'Kedebideri', serif;
+  font-size: 0.72rem;
+  color: var(--texto-suave);
+  margin-top: 6px;
+  opacity: 0.85;
+}
+
+.contador-sub strong {
+  color: var(--marrom-romantico);
+}
+
+.data-hoje {
+  font-size: 0.75rem;
+  color: var(--marrom-romantico);
+  margin-top: 14px;
+  letter-spacing: 0.08em;
+  font-family: 'Kedebideri', serif;
+  opacity: 0.75;
+}
+
+.footer-divider {
+  height: 1px;
+  margin: 20px auto;
+  max-width: 200px;
+  background: linear-gradient(90deg, transparent, var(--rosa-medio), transparent);
+  opacity: 0.6;
+}
+
+.footer-credit {
+  font-family: 'Kedebideri', serif;
+  font-size: 0.72rem;
+  color: var(--marrom-romantico);
+  opacity: 0.6;
+  letter-spacing: 0.05em;
+}
+
+.footer-credit a {
+  color: var(--rosa-escuro);
+  text-decoration: none;
+}
+
+.footer-credit a:hover {
+  text-decoration: underline;
+}
+
+/* ---------- RESPONSIVO ---------- */
+@media (max-width: 520px) {
+  .titulo-devocional { font-size: 1.85rem; }
+  .card              { margin: 20px 12px 0; padding: 28px 18px; }
+  .contador-tempo    { font-size: 2rem; }
+  .header-logo       { max-width: 170px; }
+}
