@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Amanhecer na Presença</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Kedebideri:wght@400;500;600;700;800;900&family=Sacramento&display=swap" rel="stylesheet" />
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/png" href="logo1.png" />
+</head>
+<body>
+
+  <div class="wrapper">
+
+    <!-- HEADER -->
+    <header class="header">
+      <div class="header-brand">
+        <div class="logo-icon">
+          <img src="logo1.png" alt="Pomba do Espírito Santo" onerror="this.style.display='none'; document.getElementById('pomba-svg').style.display='block'" />
+          <svg id="pomba-svg" style="display:none" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
+            <!-- Corpo da pomba -->
+            <path d="M20,62 Q10,50 18,38 Q28,22 50,28 Q65,20 80,28 Q100,18 108,30 Q116,42 100,50 Q88,56 75,52 L90,70 Q75,78 60,68 Q50,80 35,76 Q18,72 20,62 Z" fill="#742802" opacity="0.85"/>
+            <!-- Asa -->
+            <path d="M50,28 Q62,10 85,18 Q100,14 108,30 Q88,22 75,32 Q62,28 50,28 Z" fill="#c4602a" opacity="0.7"/>
+            <!-- Rabo -->
+            <path d="M35,76 Q25,90 15,88 Q22,78 20,62 Q28,72 35,76 Z" fill="#742802" opacity="0.9"/>
+            <!-- Olho -->
+            <circle cx="92" cy="36" r="3" fill="#fdf6ee"/>
+            <!-- Bico -->
+            <path d="M108,30 L118,28 L112,36 Z" fill="#c4602a"/>
+          </svg>
+        </div>
+        <img src="logo2.png" alt="Amanhecer com Deus" class="header-logo" />
+      </div>
+      <p class="header-subtitle">Devocional Diário</p>
+    </header>
+
+    <div class="divider"></div>
+
+    <!-- CARD DEVOCIONAL -->
+    <main class="card" id="card-devocional">
+
+      <div class="badge-dia" id="badge-dia">✦ Dia 1 de 365</div>
+
+      <!-- TÍTULO -->
+      <h2 class="titulo-devocional" id="titulo-devocional">Carregando...</h2>
+
+      <!-- BLOCO VERSÍCULO (oculto no dia introdutório) -->
+      <div id="bloco-versiculo">
+        <p class="secao-label">Versículo do Dia</p>
+        <div class="versiculo-box">
+          <p class="versiculo-texto" id="versiculo-texto"></p>
+          <p class="versiculo-ref"   id="versiculo-ref"></p>
+        </div>
+      </div>
+
+      <!-- TEXTO DEVOCIONAL -->
+      <p class="secao-label">Devocional</p>
+      <p class="devocional-texto" id="devocional-texto"></p>
+
+      <!-- BLOCO ORAÇÃO (oculto no dia introdutório) -->
+      <div id="bloco-oracao" class="oracao-box">
+        <p class="oracao-label">✦ Oração do Dia</p>
+        <p class="oracao-texto" id="oracao-texto"></p>
+      </div>
+
+      <div class="sep-floral">✦ · ✦ · ✦</div>
+
+    </main>
+
+    <!-- CONTADOR REGRESSIVO -->
+    <footer class="footer">
+      <div class="contador-box">
+        <p class="contador-label">Próximo devocional em</p>
+        <p class="contador-tempo" id="contador-tempo">--:--:--</p>
+        <p class="contador-sub">Todo dia às <strong>00:00</strong> um novo devocional</p>
+      </div>
+      <p class="data-hoje" id="data-hoje"></p>
+      <div class="footer-divider"></div>
+      <p class="footer-credit">Desenvolvido por <a href="https://vyerak.lovable.app" target="_blank" rel="noopener noreferrer">Vyerak</a></p>
+    </footer>
+
+  </div>
+
+  <!-- JavaScript -->
+  <script src="devocionais.js"></script>
+  <script src="app.js"></script>
+
+</body>
+</html>
