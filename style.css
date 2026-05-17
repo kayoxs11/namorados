@@ -460,6 +460,22 @@ body {
   border-color: var(--verde-esc);
 }
 
+.presence-link {
+  display: inline-block;
+  color: var(--marrom);
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid rgba(116,40,2,0.3);
+  transition: border-color 0.2s, color 0.2s;
+  margin-top: 0.5rem;
+}
+
+.presence-link:hover {
+  color: var(--verde-esc);
+  border-color: var(--verde-esc);
+}
+
 /* ===========================
    ANIMAÇÕES DE ENTRADA
    =========================== */
