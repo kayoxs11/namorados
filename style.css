@@ -2,7 +2,7 @@
    VARIÁVEIS E RESET
    =========================== */
 :root {
-  --marrom:    #742802;
+  --marrom:    #c65563;
   --verde:     #808e68;
   --verde-esc: #727753;
   --creme:     #f5f0e8;
@@ -100,10 +100,26 @@ body {
   margin-bottom: 8px;
 }
 
+.logo-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 8px;
+}
+
 .heart-icon {
-  font-size: 2rem;
+  font-size: 1.6rem;
   color: var(--marrom);
   animation: pulse 2s ease-in-out infinite;
+}
+
+/* Logo image (replaces textual site title) */
+.site-logo {
+  display: block;
+  width: clamp(140px, 22vw, 220px);
+  height: auto;
+  object-fit: contain;
 }
 
 @keyframes pulse {
@@ -118,6 +134,12 @@ body {
   font-weight: 400;
   letter-spacing: 1px;
   line-height: 1;
+}
+
+@media (max-width: 600px) {
+  .site-logo {
+    width: clamp(120px, 36vw, 140px);
+  }
 }
 
 .site-subtitle {
