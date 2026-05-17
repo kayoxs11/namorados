@@ -117,7 +117,7 @@ body {
 /* Logo image (replaces textual site title) */
 .site-logo {
   display: block;
-  width: clamp(170px, 22vw, 220px);
+  width: 200px;
   height: auto;
   object-fit: contain;
 }
