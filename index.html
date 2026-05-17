@@ -2,96 +2,96 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Amanhecer com Deus</title>
-
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Kedebideri:wght@400;500;600;700;800;900&family=Sacramento&display=swap" rel="stylesheet" />
-
-  <!-- CSS -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Devocional Diário para Casais</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Kedebideri:wght@400;500;600;700;800;900&family=Sacramento&display=swap');
+  </style>
 </head>
 <body>
 
-  <div class="wrapper">
+  <!-- Fundo decorativo -->
+  <div class="bg-orb orb1"></div>
+  <div class="bg-orb orb2"></div>
+  <div class="bg-orb orb3"></div>
 
-    <!-- HEADER -->
-    <header class="header">
-      <div class="logo-icon">
-        <!--
-          Substitua a tag <img> abaixo pelo caminho da sua imagem de pomba.
-          Exemplo: <img src="pomba.png" alt="Pomba" />
-          A imagem já está estilizada via CSS (.logo-icon img).
-          Enquanto isso, um SVG de placeholder é exibido.
-        -->
-        <img src="pomba.png" alt="Pomba do Espírito Santo" onerror="this.style.display='none'; document.getElementById('pomba-svg').style.display='block'" />
-        <svg id="pomba-svg" style="display:none" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
-          <!-- Corpo da pomba -->
-          <path d="M20,62 Q10,50 18,38 Q28,22 50,28 Q65,20 80,28 Q100,18 108,30 Q116,42 100,50 Q88,56 75,52 L90,70 Q75,78 60,68 Q50,80 35,76 Q18,72 20,62 Z" fill="#742802" opacity="0.85"/>
-          <!-- Asa -->
-          <path d="M50,28 Q62,10 85,18 Q100,14 108,30 Q88,22 75,32 Q62,28 50,28 Z" fill="#c4602a" opacity="0.7"/>
-          <!-- Rabo -->
-          <path d="M35,76 Q25,90 15,88 Q22,78 20,62 Q28,72 35,76 Z" fill="#742802" opacity="0.9"/>
-          <!-- Olho -->
-          <circle cx="92" cy="36" r="3" fill="#fdf6ee"/>
-          <!-- Bico -->
-          <path d="M108,30 L118,28 L112,36 Z" fill="#c4602a"/>
-        </svg>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="logo-area">
+      <span class="heart-icon">✦</span>
+      <h1 class="site-title">Amor & Fé</h1>
+    </div>
+    <p class="site-subtitle">DEVOCIONAL DIÁRIO PARA CASAIS</p>
+  </header>
+
+  <!-- Card principal -->
+  <main class="main-content">
+    <div class="devocional-card" id="devocionalCard">
+
+      <!-- Badge do dia -->
+      <div class="day-badge" id="dayBadge">
+        <span class="badge-icon">✦</span>
+        <span id="dayNumber">DIA 1 DE 365</span>
       </div>
-      <h1 class="header-title">Amanhecer<br />com Deus</h1>
-      <p class="header-subtitle">Devocional Diário</p>
-    </header>
 
-    <div class="divider"></div>
+      <!-- Título do devocional -->
+      <h2 class="devocional-title" id="devocionalTitle">Carregando...</h2>
 
-    <!-- CARD DEVOCIONAL -->
-    <main class="card" id="card-devocional">
+      <!-- Versículo -->
+      <div class="versiculo-block">
+        <p class="versiculo-text" id="versiculoText"></p>
+        <span class="versiculo-ref" id="versiculoRef"></span>
+      </div>
 
-      <div class="badge-dia" id="badge-dia">✦ Dia 1 de 365</div>
+      <!-- Separador ornamental -->
+      <div class="ornament">✦ ✦ ✦</div>
 
-      <!-- TÍTULO -->
-      <h2 class="titulo-devocional" id="titulo-devocional">Carregando...</h2>
+      <!-- Reflexão -->
+      <div class="reflexao-block">
+        <h3 class="reflexao-label">Reflexão</h3>
+        <p class="reflexao-text" id="reflexaoText"></p>
+      </div>
 
-      <!-- BLOCO VERSÍCULO (oculto no dia introdutório) -->
-      <div id="bloco-versiculo">
-        <p class="secao-label">Versículo do Dia</p>
-        <div class="versiculo-box">
-          <p class="versiculo-texto" id="versiculo-texto"></p>
-          <p class="versiculo-ref"   id="versiculo-ref"></p>
+      <!-- Oração -->
+      <div class="oracao-block">
+        <h3 class="oracao-label">✦ Oração do Casal</h3>
+        <p class="oracao-text" id="oracaoText"></p>
+      </div>
+
+      <!-- Desafio do dia -->
+      <div class="desafio-block">
+        <h3 class="desafio-label">Desafio de Hoje</h3>
+        <p class="desafio-text" id="desafioText"></p>
+      </div>
+
+      <!-- Barra de progresso -->
+      <div class="card-footer">
+        <div class="progress-bar-wrap">
+          <div class="progress-bar" id="progressBar"></div>
         </div>
+        <p class="progress-label" id="progressLabel">Progresso no ano</p>
       </div>
 
-      <!-- TEXTO DEVOCIONAL -->
-      <p class="secao-label">Devocional</p>
-      <p class="devocional-texto" id="devocional-texto"></p>
+    </div>
 
-      <!-- BLOCO ORAÇÃO (oculto no dia introdutório) -->
-      <div id="bloco-oracao" class="oracao-box">
-        <p class="oracao-label">✦ Oração do Dia</p>
-        <p class="oracao-texto" id="oracao-texto"></p>
-      </div>
+    <!-- Timer até meia-noite -->
+    <div class="timer-card">
+      <p class="timer-label">PRÓXIMO DEVOCIONAL EM</p>
+      <div class="timer-display" id="timerDisplay">00:00:00</div>
+      <p class="timer-sub">Todo dia às <strong>00:00</strong> um novo devocional</p>
+      <p class="timer-date" id="timerDate"></p>
+    </div>
 
-      <div class="sep-floral">✦ · ✦ · ✦</div>
+  </main>
 
-    </main>
+  <footer class="site-footer">
+    <p>Desenvolvido por <a href="https://vyerak.lovable.app/" target="_blank" rel="noopener" class="dev-link">Vyerak</a></p>
+  </footer>
 
-    <!-- CONTADOR REGRESSIVO -->
-    <footer class="footer">
-      <div class="contador-box">
-        <p class="contador-label">Próximo devocional em</p>
-        <p class="contador-tempo" id="contador-tempo">--:--:--</p>
-        <p class="contador-sub">Todo dia às <strong>05:00</strong> um novo devocional</p>
-      </div>
-      <p class="data-hoje" id="data-hoje"></p>
-    </footer>
-
-  </div>
-
-  <!-- JavaScript -->
   <script src="script.js"></script>
   <script src="app.js"></script>
-
 </body>
 </html>

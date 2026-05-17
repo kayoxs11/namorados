@@ -1,205 +1,156 @@
-// app.js
-// Lógica principal — Amanhecer na Presença (Casais)
-//
-// REGRAS:
-//  1. Primeiro acesso em qualquer dispositivo → sempre exibe o Dia 1 (introdução).
-//  2. A partir do segundo acesso, um devocional ALEATÓRIO é escolhido por dia.
-//  3. A troca acontece todos os dias às 00:00 (meia-noite).
-//     ──> Se a sua cliente quiser trocar às 05:00 basta alterar HORA_TROCA abaixo.
-//  4. O índice do dia fica salvo no localStorage para não mudar durante o mesmo dia.
-//  5. Um contador regressivo mostra quanto falta para a próxima troca.
+// app.js — Lógica principal do Devocional Diário para Casais
 
-// ─── CONFIGURAÇÃO ────────────────────────────────────────────────────────────
-const HORA_TROCA = 0;   // 0 = meia-noite | altere para 5 se quiser às 05:00
-const MINUTO_TROCA = 0; // minuto exato da troca
+(function () {
+  // ─── CHAVES NO localStorage ─────────────────────────
+  const KEY_FIRST_VISIT   = 'devocional_first_visit_done';
+  const KEY_SEQUENCE      = 'devocional_sequence';       // Array com a ordem embaralhada
+  const KEY_CURRENT_IDX   = 'devocional_current_idx';   // Qual posição da sequência estamos
+  const KEY_LAST_DATE     = 'devocional_last_date';      // Data (YYYY-MM-DD) da última exibição
 
-// Chaves do localStorage
-const KEY_VISITED  = 'acd_casais_visited';   // se já visitou antes
-const KEY_INDEX    = 'acd_casais_index';     // índice do devocional atual
-const KEY_DATE     = 'acd_casais_date';      // string da data do devocional atual
-
-// ─── UTILITÁRIOS ─────────────────────────────────────────────────────────────
-
-/** Retorna um número aleatório inteiro entre min e max (inclusivos). */
-function randomInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-/** Retorna a string "YYYY-MM-DD" para hoje no fuso local. */
-function dataHoje() {
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-}
-
-/** Formata a data de hoje para exibição. */
-function dataFormatada() {
-  return new Date().toLocaleDateString('pt-BR', {
-    weekday: 'long',
-    year:    'numeric',
-    month:   'long',
-    day:     'numeric'
-  });
-}
-
-/** Retorna o dia do ano (1..365/366) no fuso local. */
-function getDayOfYear() {
-  const now = new Date();
-  const start = new Date(now.getFullYear(), 0, 0);
-  const diff = now - start;
-  const oneDay = 1000 * 60 * 60 * 24;
-  return Math.floor(diff / oneDay);
-}
-
-/**
- * Calcula os milissegundos até o próximo horário de troca (HORA_TROCA:MINUTO_TROCA).
- * Se já passou hoje, calcula para amanhã.
- */
-function msAteProximaTroca() {
-  const agora  = new Date();
-  const troca  = new Date(agora);
-
-  troca.setHours(HORA_TROCA, MINUTO_TROCA, 0, 0);
-
-  if (troca <= agora) {
-    // Já passou hoje → próxima troca é amanhã
-    troca.setDate(troca.getDate() + 1);
+  // ─── UTILITÁRIOS ───────────────────────────────────
+  function todayStr() {
+    // Usa data LOCAL do dispositivo (evita problema de fuso horário com UTC)
+    const d   = new Date();
+    const y   = d.getFullYear();
+    const mo  = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${mo}-${day}`;
   }
 
-  return troca - agora;
-}
-
-// ─── EXIBIÇÃO ────────────────────────────────────────────────────────────────
-
-/**
- * Renderiza o devocional de índice `index` no DOM.
- * @param {number} index  Índice no array DEVOCIONAIS
- */
-function mostrarDevocional(index) {
-  const d = DEVOCIONAIS[index];
-  if (!d) return;
-
-  const isIntroducao = !!d.introducao;
-
-  // Badge e título
-  document.getElementById('badge-dia').textContent         = `✦ Dia ${index + 1} de ${DEVOCIONAIS.length}`;
-  document.getElementById('titulo-devocional').textContent  = d.titulo;
-
-  // Data
-  document.getElementById('data-hoje').textContent = dataFormatada();
-
-  // Versículo — oculta bloco inteiro se for introdução
-  const blocoVersiculo = document.getElementById('bloco-versiculo');
-  if (isIntroducao) {
-    blocoVersiculo.style.display = 'none';
-  } else {
-    blocoVersiculo.style.display = '';
-    document.getElementById('versiculo-texto').textContent = d.versiculo;
-    document.getElementById('versiculo-ref').textContent   = `— ${d.ref}`;
-  }
-
-  // Texto devocional
-  document.getElementById('devocional-texto').textContent = d.texto;
-
-  // Oração — oculta bloco inteiro se for introdução
-  const blocoOracao = document.getElementById('bloco-oracao');
-  if (isIntroducao || !d.oracao) {
-    blocoOracao.style.display = 'none';
-  } else {
-    blocoOracao.style.display = '';
-    document.getElementById('oracao-texto').textContent = d.oracao;
-  }
-
-  // Animação de entrada
-  const card = document.getElementById('card-devocional');
-  card.style.animation = 'none';
-  void card.offsetHeight;                    // força reflow para reiniciar
-  card.style.animation = 'fadeUp 0.6s ease both';
-}
-
-// ─── CONTADOR REGRESSIVO ─────────────────────────────────────────────────────
-
-let intervaloContador = null;
-
-/** Formata ms em "HH:MM:SS". */
-function formatarTempo(ms) {
-  if (ms <= 0) return '00:00:00';
-  const totalSeg = Math.floor(ms / 1000);
-  const h = Math.floor(totalSeg / 3600);
-  const m = Math.floor((totalSeg % 3600) / 60);
-  const s = totalSeg % 60;
-  return [h, m, s].map(n => String(n).padStart(2, '0')).join(':');
-}
-
-function iniciarContador() {
-  const el = document.getElementById('contador-tempo');
-  if (!el) return;
-
-  // Atualiza imediatamente
-  el.textContent = formatarTempo(msAteProximaTroca());
-
-  // Limpa intervalo anterior se houver
-  if (intervaloContador) clearInterval(intervaloContador);
-
-  intervaloContador = setInterval(() => {
-    const restante = msAteProximaTroca();
-    el.textContent = formatarTempo(restante);
-
-    // Quando chegar a zero, troca o devocional automaticamente
-    if (restante <= 1000) {
-      clearInterval(intervaloContador);
-      setTimeout(() => {
-        trocarDevocionalDiario();
-        iniciarContador(); // reinicia o contador para o próximo dia
-      }, 1100);
+  function shuffle(array) {
+    // Fisher-Yates
+    const a = array.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
     }
-  }, 1000);
-}
+    return a;
+  }
 
-// ─── LÓGICA DE TROCA DIÁRIA ──────────────────────────────────────────────────
+  function getDayOfYear(dateStr) {
+    // Retorna o dia do ano (1–365/366) de uma data "YYYY-MM-DD"
+    const d = new Date(dateStr + 'T12:00:00');
+    const start = new Date(d.getFullYear(), 0, 0);
+    const diff = d - start;
+    return Math.floor(diff / 86400000);
+  }
 
-/**
- * Escolhe e exibe um novo devocional aleatório.
- * Salva no localStorage para que a mesma sessão/dia use o mesmo índice.
- * Garante que o índice 0 (introdução) não seja escolhido aleatoriamente.
- */
-function trocarDevocionalDiario() {
-  // Use o dia do ano como índice (Dia 1 -> índice 0). Garante que cada dia corresponda
-  // a um devocional pré-definido no array `DEVOCIONAIS`.
-  const dayIndex = getDayOfYear() - 1;
-  const index = Math.max(0, Math.min(dayIndex, DEVOCIONAIS.length - 1));
-  localStorage.setItem(KEY_INDEX, String(index));
-  localStorage.setItem(KEY_DATE,  dataHoje());
-  mostrarDevocional(index);
-}
+  // ─── LÓGICA DE SELEÇÃO DO DEVOCIONAL ───────────────
+  function getDevocionalIndex() {
+    const today = todayStr();
+    const firstVisitDone = localStorage.getItem(KEY_FIRST_VISIT);
 
-// ─── INICIALIZAÇÃO ───────────────────────────────────────────────────────────
+    // PRIMEIRA VEZ em qualquer dispositivo → mostra o devocional nº 0
+    if (!firstVisitDone) {
+      // Gera sequência embaralhada para todos os devocionais
+      const sequence = shuffle(Array.from({ length: DEVOCIONAIS.length }, (_, i) => i));
+      localStorage.setItem(KEY_FIRST_VISIT, 'true');
+      localStorage.setItem(KEY_SEQUENCE, JSON.stringify(sequence));
+      localStorage.setItem(KEY_CURRENT_IDX, '0');
+      localStorage.setItem(KEY_LAST_DATE, today);
+      return sequence[0];
+    }
 
-(function init() {
-  const jaVisitou = localStorage.getItem(KEY_VISITED);
+    // Já visitou antes: verifica se mudou o dia
+    const lastDate = localStorage.getItem(KEY_LAST_DATE);
+    const sequence = JSON.parse(localStorage.getItem(KEY_SEQUENCE) || '[]');
+    const currentIdx = parseInt(localStorage.getItem(KEY_CURRENT_IDX) || '0', 10);
 
-  if (!jaVisitou) {
-    // ── PRIMEIRO ACESSO ──
-    // Exibe sempre o devocional de introdução (índice 0)
-    localStorage.setItem(KEY_VISITED, 'true');
-    localStorage.setItem(KEY_INDEX,   '0');
-    localStorage.setItem(KEY_DATE,    dataHoje());
-    mostrarDevocional(0);
+    if (lastDate === today) {
+      // Mesmo dia → devolve o devocional atual sem avançar
+      return sequence[currentIdx] !== undefined ? sequence[currentIdx] : 0;
+    }
 
-  } else {
-    // ── ACESSOS SEGUINTES ──
-    const indexSalvo = localStorage.getItem(KEY_INDEX);
-    const dateSalva  = localStorage.getItem(KEY_DATE);
-    const hoje       = dataHoje();
+    // Novo dia → avança para o próximo devocional
+    let sequenceToUse = sequence;
+    let idx = currentIdx + 1;
 
-    if (dateSalva === hoje && indexSalvo !== null) {
-      // Mesmo dia → usa o devocional já sorteado hoje
-      mostrarDevocional(parseInt(indexSalvo, 10));
-    } else {
-      // Dia novo → sorteia um devocional novo
-      trocarDevocionalDiario();
+    // Se não houver sequência válida ou se acabou a sequência, embaralha tudo de novo
+    if (sequenceToUse.length !== DEVOCIONAIS.length || idx >= sequenceToUse.length) {
+      sequenceToUse = shuffle(Array.from({ length: DEVOCIONAIS.length }, (_, i) => i));
+      idx = 0;
+    }
+
+    localStorage.setItem(KEY_SEQUENCE, JSON.stringify(sequenceToUse));
+    localStorage.setItem(KEY_CURRENT_IDX, String(idx));
+    localStorage.setItem(KEY_LAST_DATE, today);
+    return sequenceToUse[idx];
+  }
+
+  // ─── EXIBIÇÃO ──────────────────────────────────────
+  function renderDevocional(devIdx) {
+    const dev = DEVOCIONAIS[devIdx];
+    if (!dev) return;
+
+    // Número do dia no ano (para exibição)
+    const dayNum = getDayOfYear(todayStr());
+
+    // Elementos DOM
+    document.getElementById('dayNumber').textContent =
+      `DIA ${dayNum} DE 365`;
+
+    document.getElementById('devocionalTitle').textContent = dev.titulo;
+    document.getElementById('versiculoText').textContent  = dev.versiculo;
+    document.getElementById('versiculoRef').textContent   = dev.referencia;
+    document.getElementById('reflexaoText').textContent   = dev.reflexao;
+    document.getElementById('oracaoText').textContent     = dev.oracao;
+    document.getElementById('desafioText').textContent    = dev.desafio;
+
+    // Barra de progresso
+    const pct = Math.round((dayNum / 365) * 100);
+    const bar = document.getElementById('progressBar');
+    const lbl = document.getElementById('progressLabel');
+    if (bar) bar.style.width = pct + '%';
+    if (lbl) lbl.textContent = `Dia ${dayNum} de 365 — ${pct}% do ano`;
+
+    // Timer em tempo real (atualiza a cada segundo)
+    updateTimer();
+    setInterval(updateTimer, 1000);
+  }
+
+  // ─── TIMER ATÉ MEIA-NOITE ──────────────────────────
+  function updateTimer() {
+    const now  = new Date();
+    const next = new Date();
+    next.setHours(24, 0, 0, 0);
+    const diff = next - now;
+
+    const h = String(Math.floor(diff / 3600000)).padStart(2, '0');
+    const m = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
+    const s = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+
+    const el = document.getElementById('timerDisplay');
+    if (el) el.textContent = `${h}:${m}:${s}`;
+
+    // Data por extenso
+    const dateEl = document.getElementById('timerDate');
+    if (dateEl) {
+      dateEl.textContent = now.toLocaleDateString('pt-BR', {
+        weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+      });
+    }
+
+    // Se virou a meia-noite, recarrega a página para exibir novo devocional
+    if (diff <= 1000) {
+      setTimeout(() => location.reload(), 1200);
     }
   }
 
-  // Inicia o contador regressivo independentemente
-  iniciarContador();
+  // ─── INICIALIZA ────────────────────────────────────
+  function init() {
+    try {
+      const idx = getDevocionalIndex();
+      renderDevocional(idx);
+    } catch (err) {
+      console.error('Erro ao carregar devocional:', err);
+      renderDevocional(0);
+    }
+  }
+
+  // Aguarda DOM e dados
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 })();
